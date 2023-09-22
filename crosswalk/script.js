@@ -1,5 +1,6 @@
 const stoplight = document.getElementById('stoplight');
 const walklight = document.getElementById('walklight');
+const countdown = document.getElementById('countdown');
 const btn = document.getElementById('btn');
 
 const lightsToggle = () => {
@@ -9,38 +10,27 @@ const lightsToggle = () => {
   walklight.classList.toggle('walk-off');
 };
 
-// stage 1
-// const lightsHandler = () => {
-//   lightsToggle();
-//   setTimeout(() => {
-//     lightsToggle();
-//   }, '5000');
-// };
+const lightsHandler = () => {
+  countdownHandler(3, 'cross now');
+  setTimeout(() => {
+    lightsToggle();
+    countdownHandler(5, 'do not cross');
+    setTimeout(() => {
+      lightsToggle();
+    }, '5000');
+  }, '3000');
+};
 
-// stage 2
-const countdown = (seconds, message) => {
+btn.addEventListener('click', lightsHandler);
+
+const countdownHandler = (seconds, message) => {
   let timer = setInterval(() => {
+    seconds -= 1;
     if (seconds <= 0) {
       clearInterval(timer);
-      document.getElementById('countdown').innerHTML = message;
+      countdown.innerHTML = message;
     } else {
-      document.getElementById('countdown').innerHTML =
-        seconds + ' seconds remaining';
+      countdown.innerHTML = seconds + ' seconds remaining';
     }
-    seconds -= 1;
   }, 1000);
 };
-
-const lightsHandler = (seconds) => {
-  countdown(5, 'safe to walk');
-  const lightsInterval = setInterval(() => {
-    lightsToggle();
-    if (seconds <= 0) {
-      clearInterval(lightsInterval);
-    } else {
-      seconds -= 1;
-    }
-  }, '6000');
-};
-
-btn.addEventListener('click', lightsHandler(5));
